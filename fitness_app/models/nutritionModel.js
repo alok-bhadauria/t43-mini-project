@@ -1,4 +1,3 @@
-// models/nutritionModel.js
 const pool = require("../db.js");
 
 const NutritionModel = {
