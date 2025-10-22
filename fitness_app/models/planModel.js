@@ -1,4 +1,3 @@
-// models/planModel.js
 const pool = require("../db.js");
 
 const PlanModel = {
