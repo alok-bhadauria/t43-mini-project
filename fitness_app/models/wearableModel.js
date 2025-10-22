@@ -1,4 +1,3 @@
-// models/wearableModel.js
 const pool = require("../db.js");
 
 const WearableModel = {
