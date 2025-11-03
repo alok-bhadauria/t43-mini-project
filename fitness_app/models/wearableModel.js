@@ -1,7 +1,6 @@
 const pool = require("../db.js");
 
 const WearableModel = {
-  // Get all wearables for a user
   async getAllWearables(user_id) {
     try {
       const result = await pool.query(
@@ -17,7 +16,6 @@ const WearableModel = {
     }
   },
 
-  // Get a single wearable by ID
   async getWearableById(id) {
     try {
       const result = await pool.query(
@@ -31,7 +29,6 @@ const WearableModel = {
     }
   },
 
-  // Add new wearable record
   async addWearable(data) {
     const { user_id, device_name, steps, heart_rate, sleep_hours, recorded_at } = data;
     try {
@@ -49,7 +46,6 @@ const WearableModel = {
     }
   },
 
-  // Update wearable by ID
   async updateWearable(id, updates) {
     const { device_name, steps, heart_rate, sleep_hours, recorded_at } = updates;
 
@@ -73,7 +69,6 @@ const WearableModel = {
     }
   },
 
-  // Delete wearable by ID
   async deleteWearable(id) {
     try {
       const result = await pool.query(
