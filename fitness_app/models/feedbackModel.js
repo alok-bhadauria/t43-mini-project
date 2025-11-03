@@ -1,7 +1,6 @@
 const pool = require("../db.js");
 
 const FeedbackModel = {
-  // Create — Add a new feedback entry
   async createFeedback(feedback) {
     const { user_id, rating, comments } = feedback;
     try {
@@ -18,7 +17,6 @@ const FeedbackModel = {
     }
   },
 
-  // Read — Get all feedback entries
   async getAllFeedback() {
     try {
       const result = await pool.query(
@@ -31,7 +29,6 @@ const FeedbackModel = {
     }
   },
 
-  // Read — Get feedback by user
   async getFeedbackByUser(user_id) {
     try {
       const result = await pool.query(
@@ -45,7 +42,6 @@ const FeedbackModel = {
     }
   },
 
-  // Update — Modify feedback comments or rating
   async updateFeedback(id, fields) {
     try {
       const setStr = Object.keys(fields)
@@ -67,7 +63,6 @@ const FeedbackModel = {
     }
   },
 
-  // Delete — Remove feedback entry
   async deleteFeedback(id) {
     try {
       const result = await pool.query(
