@@ -59,7 +59,6 @@ const UserModel = {
       );
       return result.rows[0];
     } catch (err) {
-      // Gracefully handle duplicate emails
       if (err.code === "23505") {
         console.warn(`User with email '${email}' already exists`);
         const existingUser = await pool.query(
