@@ -14,7 +14,7 @@ const FeedbackController = {
   },
 
   // 📋 Get All Feedback
-  async getAll(req, res) {
+  async getAll(req, res)   {
     try {
       const feedbacks = await FeedbackModel.getAllFeedback();
       res.json(feedbacks);
@@ -25,17 +25,17 @@ const FeedbackController = {
 
   // 👤 Get Feedback by User
   async getByUser(req, res) {
-    try {
+    try  {
       const { user_id } = req.params;
       const feedbacks = await FeedbackModel.getFeedbackByUser(user_id);
       res.json(feedbacks);
-    } catch (err) {
+     } catch (err) {
       res.status(500).json({ error: "Error fetching user feedback" });
     }
   },
 
   // ✏️ Update Feedback
-  async update(req, res) {
+  async update(req,res) {
     try {
       const { id } = req.params;
       const updated = await FeedbackModel.updateFeedback(id, req.body);
@@ -57,4 +57,5 @@ const FeedbackController = {
   },
 };
 
-module.exports = FeedbackController;
+module.exports=FeedbackController;
+
