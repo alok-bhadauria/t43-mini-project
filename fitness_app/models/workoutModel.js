@@ -1,7 +1,6 @@
 const pool = require("../db.js");
 
 const WorkoutModel = {
-  // ---------------- Create a new workout ----------------
   async createWorkout(workout) {
     const { user_id, type, exercises, duration, notes, workout_date } = workout;
     try {
@@ -26,7 +25,6 @@ const WorkoutModel = {
     }
   },
 
-  // ---------------- Get all workouts for a user ----------------
   async getAllWorkouts(user_id) {
     try {
       const result = await pool.query(
@@ -40,7 +38,6 @@ const WorkoutModel = {
     }
   },
 
-  // ---------------- Get workout by ID ----------------
   async getWorkoutById(id) {
     try {
       const result = await pool.query(
@@ -54,7 +51,6 @@ const WorkoutModel = {
     }
   },
 
-  // ---------------- Update workout ----------------
   async updateWorkout(id, updates) {
     const { type, exercises, duration, notes, workout_date } = updates;
     try {
@@ -84,7 +80,6 @@ const WorkoutModel = {
     }
   },
 
-  // ---------------- Delete workout ----------------
   async deleteWorkout(id) {
     try {
       const result = await pool.query(
