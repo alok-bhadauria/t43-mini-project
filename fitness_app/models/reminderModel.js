@@ -1,7 +1,6 @@
 const pool = require("../db.js");
 
 const ReminderModel = {
-  // Create — Add a new reminder
   async createReminder(reminder) {
     const { user_id, message, remind_at, type } = reminder;
     try {
@@ -17,7 +16,6 @@ const ReminderModel = {
     }
   },
 
-  // Read — Get all reminders for a user
   async getAllReminders(user_id) {
     try {
       const result = await pool.query(
@@ -31,7 +29,6 @@ const ReminderModel = {
     }
   },
 
-  // Read — Get a reminder by ID
   async getReminderById(id) {
     try {
       const result = await pool.query(
@@ -45,7 +42,6 @@ const ReminderModel = {
     }
   },
 
-  // Update — Modify an existing reminder
   async updateReminder(id, fields) {
     try {
       const setStr = Object.keys(fields)
@@ -67,7 +63,6 @@ const ReminderModel = {
     }
   },
 
-  // Delete — Remove a reminder by ID
   async deleteReminder(id) {
     try {
       const result = await pool.query(
