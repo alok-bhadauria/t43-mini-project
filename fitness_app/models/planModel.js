@@ -1,7 +1,6 @@
 const pool = require("../db.js");
 
 const PlanModel = {
-  // Create — Add a new plan for a user
   async createPlan(plan) {
     const { user_id, workout, diet } = plan;
     try {
@@ -18,7 +17,6 @@ const PlanModel = {
     }
   },
 
-  // Read — Get all plans (optional: later add user-specific filtering)
   async getAllPlans() {
     try {
       const result = await pool.query("SELECT * FROM fitness.plans ORDER BY created_at DESC");
@@ -29,7 +27,6 @@ const PlanModel = {
     }
   },
 
-  // Update — Modify a user’s plan
   async updatePlan(id, updates) {
     const fields = [];
     const values = [];
@@ -57,7 +54,6 @@ const PlanModel = {
     }
   },
 
-  // Delete — Remove a plan by ID
   async deletePlan(id) {
     try {
       const result = await pool.query(
