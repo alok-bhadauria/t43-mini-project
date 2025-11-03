@@ -1,7 +1,6 @@
 const pool = require("../db.js");
 
 const ProgressModel = {
-  // Get all progress logs (optionally for a specific user)
   async getAllProgress(user_id) {
     try {
       let query = "SELECT * FROM fitness.progress_logs";
@@ -20,11 +19,9 @@ const ProgressModel = {
     }
   },
 
-  // Add a new progress log
   async addProgress(log) {
     const { user_id, type, calories, duration, date } = log;
 
-    // Validate type
     if (!["workout", "meal"].includes(type)) {
       throw new Error(
         `Invalid progress log type: ${type}. Must be 'workout' or 'meal'.`
