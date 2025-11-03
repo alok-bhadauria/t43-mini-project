@@ -1,7 +1,6 @@
 const pool = require("../db.js");
 
 const UserModel = {
-  // Get all users
   async getAllUsers() {
     try {
       const result = await pool.query("SELECT * FROM fitness.users");
@@ -12,7 +11,6 @@ const UserModel = {
     }
   },
 
-  // Get user by ID
   async getUserById(id) {
     try {
       const result = await pool.query(
@@ -26,7 +24,19 @@ const UserModel = {
     }
   },
 
-  // Create new user
+  async getUserByEmail(email) {
+    try {
+      const result = await pool.query(
+        "SELECT * FROM fitness.users WHERE email = $1",
+        [email]
+      );
+      return result.rows[0];
+    } catch (err) {
+      console.error("Error fetching user by email:", err);
+      throw err;
+    }
+  },
+
   async createUser(user) {
     const {
       email,
@@ -63,7 +73,6 @@ const UserModel = {
     }
   },
 
-  // Update user by ID
   async updateUser(id, updates) {
     const fields = [];
     const values = [];
@@ -92,7 +101,6 @@ const UserModel = {
     }
   },
 
-  // Delete user by ID
   async deleteUser(id) {
     try {
       const result = await pool.query(
