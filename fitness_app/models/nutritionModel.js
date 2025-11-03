@@ -1,7 +1,6 @@
 const pool = require("../db.js");
 
 const NutritionModel = {
-  // Read — Get all meal plans for a specific user
   async getMealPlans(user_id) {
     try {
       const result = await pool.query(
@@ -15,7 +14,6 @@ const NutritionModel = {
     }
   },
 
-  // Create — Add a new meal log entry
   async addMealLog(user_id, meal) {
     const { calories } = meal;
     try {
@@ -32,7 +30,6 @@ const NutritionModel = {
     }
   },
 
-  // Update — Modify user’s diet plan
   async updateDiet(user_id, diet) {
     try {
       const result = await pool.query(
@@ -49,7 +46,6 @@ const NutritionModel = {
     }
   },
 
-  // Delete — Optional: remove a meal log (if needed later)
   async deleteMealLog(log_id) {
     try {
       const result = await pool.query(
