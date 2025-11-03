@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitTrack - Smart Fitness Companion</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/header.css" />
+  <link rel="stylesheet" href="/css/footer.css" />
+  <link rel="stylesheet" href="/css/index.css" />
+
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+
+  <!-- Scripts -->
+  <script defer src="/js/theme.js"></script>
+  <script defer src="/js/index.js"></script>
+</head>
+
+<body>
+  <!-- Header Include (corrected path) -->
+  <%- include('../layout/header') %>
+
+  <!-- ===== Hero Section ===== -->
+  <main class="home-section">
+    <section class="hero">
+      <h1>Track. Improve. Transform.</h1>
+      <p>FitTrack helps you stay consistent with workouts, meals, and progress through AI-powered insights.</p>
+      <a href="/signup" class="btn-primary">Get Started</a>
+    </section>
+
+    <!-- ===== Features Section ===== -->
+    <section class="features">
+      <div class="feature">
+        <i class="ri-bar-chart-line"></i>
+        <h3>Smart Progress Tracking</h3>
+        <p>Visualize your fitness journey and stay motivated with smart analytics.</p>
+      </div>
+
+      <div class="feature">
+        <i class="ri-restaurant-line"></i>
+        <h3>Personalized Nutrition</h3>
+        <p>AI-curated meal plans based on your goals, preferences, and habits.</p>
+      </div>
+
+      <div class="feature">
+        <i class="ri-armchair-line"></i>
+        <h3>Adaptive Workouts</h3>
+        <p>Dynamic workouts designed to match your fitness level and equipment.</p>
+      </div>
+
+      <div class="feature">
+        <i class="ri-robot-line"></i>
+        <h3>AI Fitness Coach</h3>
+        <p>Your virtual coach gives real-time recommendations for improvement.</p>
+      </div>
+    </section>
+
+    <!-- ===== CTA Section ===== -->
+    <section class="cta">
+      <h2>Start Your Fitness Journey Today</h2>
+      <p>Join thousands using FitTrack to achieve their dream physique with data-driven insights.</p>
+      <a href="/signup" class="btn-primary big">Join Now</a>
+    </section>
+  </main>
+
+  <!-- Footer Include (corrected path) -->
+  <%- include('../layout/footer') %>
+</body>
+</html>
