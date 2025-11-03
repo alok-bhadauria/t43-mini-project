@@ -1,6 +1,5 @@
-// controllers/planController.js
-const PlanModel = require("../models/planModel");
 
+const PlanModel = require("../models/planModel");
 const PlanController = {
   async create(req, res) {
     try {
@@ -42,3 +41,4 @@ const PlanController = {
 };
 
 module.exports = PlanController;
+
