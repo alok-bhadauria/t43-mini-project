@@ -1,0 +1,46 @@
+<section class="page-header">
+  <div>
+    <h2 class="page-title">Diet Helper</h2>
+    <p class="page-subtitle">Quick view of veg and non veg food options with primary nutrients</p>
+  </div>
+</section>
+
+<section class="filter-strip">
+  <div class="filter-label">Filter by type and nutrient</div>
+  <div class="filter-chips" id="dietFilter">
+    <button type="button" data-type="all" class="chip chip-blue chip-filter active">All</button>
+    <button type="button" data-type="veg" class="chip chip-filter">Veg</button>
+    <button type="button" data-type="nonveg" class="chip chip-filter">Non veg</button>
+  </div>
+</section>
+
+<section class="diet-grid">
+  <% diets.forEach(function(d){ %>
+    <article class="diet-card" data-type="<%= d.type.toLowerCase() %>" data-nutrient="<%= d.nutrient.toLowerCase() %>">
+      <div class="card-header-row">
+        <h3 class="card-title"><%= d.item_name %></h3>
+        <span class="badge badge-small"><%= d.type.toUpperCase() %></span>
+      </div>
+      <div class="tag-row">
+        <span class="chip chip-green"><%= d.nutrient %></span>
+      </div>
+      <p class="card-text"><%= d.benefits %></p>
+    </article>
+  <% }) %>
+</section>
+
+<script>
+document.querySelectorAll(".chip-filter").forEach(btn=>{
+  btn.onclick = ()=>{
+    document.querySelectorAll(".chip-filter").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+
+    const filter = btn.dataset.group || btn.dataset.type;
+
+    document.querySelectorAll(".workout-card, .diet-card").forEach(card=>{
+      card.style.display = (filter==="all" || card.dataset.group===filter || card.dataset.type===filter)
+      ? "block" : "none";
+    });
+  };
+});
+</script>

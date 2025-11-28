@@ -1,0 +1,143 @@
+<section class="page-header">
+  <div>
+    <h2 class="page-title">Profile</h2>
+    <p class="page-subtitle">Update your metrics and preferences to keep the AI plan aligned</p>
+  </div>
+</section>
+
+<section class="profile-section">
+  <form id="profileForm" method="post" action="/profile" class="profile-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Email</label>
+        <div class="input-with-icon">
+          <i class="ri-mail-line"></i>
+          <input type="email" value="<%= user ? user.email : "" %>" disabled>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Full name</label>
+        <div class="input-with-icon">
+          <i class="ri-user-line"></i>
+          <input name="fullname" type="text" value="<%= user ? user.fullname : "" %>" required>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Age</label>
+        <div class="input-with-icon">
+          <i class="ri-hourglass-line"></i>
+          <input name="age" type="number" min="14" max="80" value="<%= profile ? profile.age : "" %>" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Height (cm)</label>
+        <div class="input-with-icon">
+          <i class="ri-ruler-line"></i>
+          <input name="height" type="number" min="130" max="220" value="<%= profile ? profile.height : "" %>" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Weight (kg)</label>
+        <div class="input-with-icon">
+          <i class="ri-scales-3-line"></i>
+          <input name="weight" type="number" min="30" max="200" step="0.1" value="<%= profile ? profile.weight : "" %>" required>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Diet preference</label>
+        <div class="select-with-icon">
+          <i class="ri-restaurant-line"></i>
+          <select name="diet_pref" required>
+            <option value="">Select preference</option>
+
+            <option value="veg" <%= profile && profile.diet_pref==="veg" ? "selected" : "" %>>Vegetarian</option>
+            <option value="nonveg" <%= profile && profile.diet_pref==="nonveg" ? "selected" : "" %>>Non-Vegetarian</option>
+            <option value="vegan" <%= profile && profile.diet_pref==="vegan" ? "selected" : "" %>>Vegan</option>
+            <option value="low_carb" <%= profile && profile.diet_pref==="low_carb" ? "selected" : "" %>>Low Carb</option>
+            <option value="low_fat" <%= profile && profile.diet_pref==="low_fat" ? "selected" : "" %>>Low Fat</option>
+            <option value="lactose_free" <%= profile && profile.diet_pref==="lactose_free" ? "selected" : "" %>>Lactose Free</option>
+            <option value="sugar_free" <%= profile && profile.diet_pref==="sugar_free" ? "selected" : "" %>>Sugar Free</option>
+
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Goals (select exactly TWO)</label>
+        <div class="goal-pill-row">
+          <% const goals = profile && profile.goal ? profile.goal : []; %>
+
+          <label class="goal-pill"><input type="checkbox" name="goal" value="muscle_gain" <%= goals.includes("muscle_gain") ? "checked" : "" %>> <span>Muscle Gain</span></label>
+          <label class="goal-pill"><input type="checkbox" name="goal" value="lean_body_mass" <%= goals.includes("lean_body_mass") ? "checked" : "" %>> <span>Lean Body Mass</span></label>
+          <label class="goal-pill"><input type="checkbox" name="goal" value="fitness_level" <%= goals.includes("fitness_level") ? "checked" : "" %>> <span>Fitness Level</span></label>
+          <label class="goal-pill"><input type="checkbox" name="goal" value="weight_loss" <%= goals.includes("weight_loss") ? "checked" : "" %>> <span>Weight Loss</span></label>
+          <label class="goal-pill"><input type="checkbox" name="goal" value="flexibility" <%= goals.includes("flexibility") ? "checked" : "" %>> <span>Flexibility</span></label>
+          <label class="goal-pill"><input type="checkbox" name="goal" value="endurance" <%= goals.includes("endurance") ? "checked" : "" %>> <span>Endurance</span></label>
+          <label class="goal-pill"><input type="checkbox" name="goal" value="stress_reduction" <%= goals.includes("stress_reduction") ? "checked" : "" %>> <span>Stress Reduction</span></label>
+          <label class="goal-pill"><input type="checkbox" name="goal" value="core_strength" <%= goals.includes("core_strength") ? "checked" : "" %>> <span>Core Strength</span></label>
+          <label class="goal-pill"><input type="checkbox" name="goal" value="sleep_improvement" <%= goals.includes("sleep_improvement") ? "checked" : "" %>> <span>Sleep Improvement</span></label>
+          <label class="goal-pill"><input type="checkbox" name="goal" value="lower_blood_pressure" <%= goals.includes("lower_blood_pressure") ? "checked" : "" %>> <span>Lower Blood Pressure</span></label>
+          <label class="goal-pill"><input type="checkbox" name="goal" value="cardio_health" <%= goals.includes("cardio_health") ? "checked" : "" %>> <span>Cardiovascular Health</span></label>
+          <label class="goal-pill"><input type="checkbox" name="goal" value="increase_energy" <%= goals.includes("increase_energy") ? "checked" : "" %>> <span>Increase Energy</span></label>
+          <label class="goal-pill"><input type="checkbox" name="goal" value="boost_immunity" <%= goals.includes("boost_immunity") ? "checked" : "" %>> <span>Boost Immunity</span></label>
+          <label class="goal-pill"><input type="checkbox" name="goal" value="mental_focus" <%= goals.includes("mental_focus") ? "checked" : "" %>> <span>Mental Focus</span></label>
+          <label class="goal-pill"><input type="checkbox" name="goal" value="exercise_consistency" <%= goals.includes("exercise_consistency") ? "checked" : "" %>> <span>Exercise Consistency</span></label>
+
+        </div>
+        <div class="field-hint">⚠ Select exactly 2 goals — AI model expects specific dual target mapping</div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group full-width">
+        <label>Password</label>
+        <div class="input-with-icon input-password">
+          <i class="ri-lock-2-line"></i>
+          <input id="profilePassword" name="password" type="password" required>
+          <button type="button" class="password-toggle" data-target="profilePassword">
+            <i class="ri-eye-off-line"></i>
+          </button>
+        </div>
+        <div class="field-hint">Password is required to verify your identity before updating profile</div>
+      </div>
+    </div>
+
+    <div class="profile-actions">
+      <button type="submit" class="primary-btn">Save changes</button>
+      <button type="button" id="deleteAccountBtn" class="danger-btn">Delete account</button>
+    </div>
+  </form>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const goalChecks = document.querySelectorAll('input[name="goal"]');
+
+    function enforceLimit() {
+        const selected = [...goalChecks].filter(c => c.checked);
+
+        if (selected.length >= 2) {
+            goalChecks.forEach(c => {
+                if (!c.checked) {
+                    c.disabled = true;
+                    c.parentElement.classList.add("disabled-goal");
+                }
+            });
+        } else {
+            goalChecks.forEach(c => {
+                c.disabled = false;
+                c.parentElement.classList.remove("disabled-goal");
+            });
+        }
+    }
+
+    goalChecks.forEach(c => c.addEventListener("change", enforceLimit));
+    enforceLimit(); // run on load to apply rule if user already has 2 saved
+});
+</script>

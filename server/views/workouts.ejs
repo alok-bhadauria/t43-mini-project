@@ -1,0 +1,51 @@
+<section class="page-header">
+  <div>
+    <h2 class="page-title">Workout Library</h2>
+    <p class="page-subtitle">Browse basic movements with target muscles and difficulty levels</p>
+  </div>
+</section>
+
+<section class="filter-strip">
+  <div class="filter-label">Browse by muscle group</div>
+  <div class="filter-chips" id="workoutFilter">
+    <button type="button" data-group="all" class="chip chip-blue chip-filter active">All</button>
+    <button type="button" data-group="chest" class="chip chip-filter">Chest</button>
+    <button type="button" data-group="back" class="chip chip-filter">Back</button>
+    <button type="button" data-group="legs" class="chip chip-filter">Legs</button>
+    <button type="button" data-group="shoulders" class="chip chip-filter">Shoulders</button>
+    <button type="button" data-group="core" class="chip chip-filter">Core</button>
+    <button type="button" data-group="cardio" class="chip chip-filter">Cardio</button>
+  </div>
+</section>
+
+<section class="card-grid">
+  <% workouts.forEach(function(w){ %>
+    <article class="workout-card" data-group="<%= w.muscle_group.toLowerCase() %>" data-difficulty="<%= w.difficulty.toLowerCase() %>">
+      <div class="card-header-row">
+        <h3 class="card-title"><%= w.workout_name %></h3>
+        <span class="badge badge-small"><%= w.muscle_group %></span>
+      </div>
+      <div class="tag-row">
+        <span class="chip chip-difficulty"><%= w.difficulty %></span>
+        <span class="chip chip-gray"><%= w.benefit %></span>
+      </div>
+      <p class="card-text"><%= w.instructions %></p>
+    </article>
+  <% }) %>
+</section>
+
+<script>
+document.querySelectorAll(".chip-filter").forEach(btn=>{
+  btn.onclick = ()=>{
+    document.querySelectorAll(".chip-filter").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+
+    const filter = btn.dataset.group || btn.dataset.type;
+
+    document.querySelectorAll(".workout-card, .diet-card").forEach(card=>{
+      card.style.display = (filter==="all" || card.dataset.group===filter || card.dataset.type===filter)
+      ? "block" : "none";
+    });
+  };
+});
+</script>

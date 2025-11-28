@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title><%= title || "AI Fitness Coach" %></title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/style2.css" id="theme-light" disabled>
+</head>
+
+<body class="light-theme">
+
+<header class="main-header">
+  <div class="header-left">
+    <a href="/" style="display:flex;align-items:center;gap:10px">
+      <div class="logo-circle">🏋</div>
+      <div class="brand-text">
+        <span class="brand-title">AI Fitness Coach</span>
+        <span class="brand-subtitle">Train Smart, Eat Smart</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="header-right">
+    <!-- <button id="theme-toggle" class="icon-button">
+      <i class="ri-sun-line"></i>
+    </button> -->
+
+    <% if (currentUser) { %>
+      <a href="/dashboard" class="primary-btn header-auth-btn">Dashboard</a>
+      <a href="/logout" class="outline-btn header-auth-btn">Logout</a>
+    <% } else { %>
+      <a href="/login" class="primary-btn header-auth-btn">Login</a>
+      <a href="/signup" class="outline-btn header-auth-btn">Sign Up</a>
+    <% } %>
+
+    <!-- MOBILE SIDEBAR TRIGGER -->
+    <button id="openSidebar" class="icon-button nav-toggle">
+      <i class="ri-menu-fill"></i>
+    </button>
+  </div>
+</header>
+
+<div class="main-layout">
+  <!-- SIDEBAR -->
+  <aside id="sidebar" class="sidebar">
+    <p class="sidebar-section-title">Navigation</p>
+
+    <a href="/" class="sidebar-link <%= path === "/" ? "active" : "" %>">
+      <i class="ri-home-5-line"></i> <span>Home</span>
+    </a>
+
+    <a href="/dashboard" class="sidebar-link <%= path.startsWith("/dashboard") ? "active" : "" %>">
+      <i class="ri-dashboard-line"></i> <span>Dashboard</span>
+    </a>
+
+    <a href="/profile" class="sidebar-link <%= path.startsWith("/profile") ? "active" : "" %>">
+      <i class="ri-user-line"></i> <span>Profile</span>
+    </a>
+
+    <a href="/progress" class="sidebar-link <%= path.startsWith("/progress") ? "active" : "" %>">
+      <i class="ri-line-chart-line"></i> <span>Progress</span>
+    </a>
+    
+    <a href="/aipanel" class="sidebar-link <%= path.startsWith("/aipanel") ? "active" : "" %>">
+      <i class="ri-cpu-line"></i> <span>AI Plan</span>
+    </a>
+
+    <a href="/workouts" class="sidebar-link <%= path.startsWith("/workouts") ? "active" : "" %>">
+      <i class="ri-open-arm-line"></i> <span>Workouts</span>
+    </a>
+
+    <a href="/diets" class="sidebar-link <%= path.startsWith("/diets") ? "active" : "" %>">
+      <i class="ri-restaurant-line"></i> <span>Diets</span>
+    </a>
+
+    <a href="/mental-health" class="sidebar-link <%= path.startsWith("/mental-health") ? "active" : "" %>">
+      <i class="ri-brain-line"></i> <span>Mental Health</span>
+    </a>
+
+    <a href="/skin-care" class="sidebar-link <%= path.startsWith("/skin-care") ? "active" : "" %>">
+      <i class="ri-sparkling-line"></i> <span>Skin Care</span>
+    </a>
+
+  </aside>
+
+  <!-- PAGE CONTENT -->
+  <main class="content-area">
+    <%- body %>
+  </main>
+</div>
+
+<footer class="main-footer">
+  <div>
+    <h4 class="footer-brand">AI Fitness Coach</h4>
+    <p class="footer-text">Your AI health companion.</p>
+    <p class="footer-meta">© 2025 | All Rights Reserved</p>
+  </div>
+
+  <div>
+    <p class="footer-heading">Explore</p>
+    <a href="/workouts" class="footer-link">Workouts</a>
+    <a href="/diets" class="footer-link">Diets</a>
+    <a href="/aipanel" class="footer-link">AI Plan Generator</a>
+  </div>
+
+  <div>
+    <p class="footer-heading">Connect</p>
+    <div class="footer-social-icons">
+      <div class="social-icon"><i class="ri-instagram-line"></i></div>
+      <div class="social-icon"><i class="ri-github-line"></i></div>
+      <div class="social-icon"><i class="ri-mail-line"></i></div>
+    </div>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+  // expose server toast (from res.locals.toast)
+  window.SERVER_TOAST = <%- JSON.stringify(toast || null) %>;
+</script>
+
+<script src="/js/theme.js"></script>
+<script src="/js/sidebar.js"></script>
+<script src="/js/toast.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+  // trigger toast automatically if server set one
+  document.addEventListener("DOMContentLoaded", function(){
+    if(window.SERVER_TOAST && window.SERVER_TOAST.message && window.showToast){
+      window.showToast(window.SERVER_TOAST.message, window.SERVER_TOAST.type || "success");
+    }
+  });
+</script>
+
+</body>
+</html>

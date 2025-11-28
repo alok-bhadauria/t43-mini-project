@@ -1,0 +1,123 @@
+<section class="page-header">
+  <div>
+    <h2 class="page-title">AI Plan Generator</h2>
+    <p class="page-subtitle">Use your latest metrics to generate a structured 30 day workout and diet template</p>
+  </div>
+</section>
+
+<section class="ai-layout">
+  <div class="ai-left">
+    <div class="ai-summary-card">
+      <div class="ai-summary-header">
+        <div class="summary-title">Your current metrics</div>
+        <div class="summary-subtitle">To update metrics, go to the profile page</div>
+      </div>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <div class="summary-label">Name</div>
+          <div class="summary-value"><%= user ? user.fullname : "-" %></div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Age</div>
+          <div class="summary-value"><%= profile ? profile.age : "-" %> years</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Height</div>
+          <div class="summary-value"><%= profile ? profile.height : "-" %> cm</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Weight</div>
+          <div class="summary-value"><%= profile ? profile.weight : "-" %> kg</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Diet preference</div>
+          <div class="summary-value"><%= profile ? profile.diet_pref.toUpperCase() : "-" %></div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">Goals</div>
+          <div class="summary-value">
+            <% if (profile && profile.goal && profile.goal.length) { %>
+              <%= profile.goal.join(", ").replaceAll("_"," ") %>
+            <% } else { %>
+              Not selected
+            <% } %>
+          </div>
+        </div>
+        <% if (profile) { %>
+          <% const h = profile.height || 0; const w = profile.weight || 0; const bmi = h ? (w/((h/100)*(h/100))).toFixed(1) : "-"; %>
+          <div class="summary-item">
+            <div class="summary-label">Approx BMI</div>
+            <div class="summary-value"><%= bmi %></div>
+          </div>
+        <% } %>
+      </div>
+      <div class="summary-note">
+        To update metrics or change goals, visit the profile page before generating a new plan.
+      </div>
+    </div>
+
+    <form id="aiGenerateForm" method="post" action="/aipanel/generate" class="ai-form">
+      <input type="hidden" name="age" value="<%= profile ? profile.age : "" %>">
+      <input type="hidden" name="height" value="<%= profile ? profile.height : "" %>">
+      <input type="hidden" name="weight" value="<%= profile ? profile.weight : "" %>">
+      <input type="hidden" name="diet_pref" value="<%= profile ? profile.diet_pref : "" %>">
+      <input type="hidden" name="goal1" value="<%= profile && profile.goal && profile.goal.length > 0 ? profile.goal[0] : "" %>">
+      <input type="hidden" name="goal2" value="<%= profile && profile.goal && profile.goal.length > 1 ? profile.goal[1] : "" %>">
+      <button type="submit" class="ai-generate-btn">
+        <span class="ai-generate-glow"></span>
+        <span class="ai-generate-text">Generate my plan</span>
+        <i class="ri-sparkling-2-line"></i>
+      </button>
+      <div class="field-hint center">The model currently focuses on one primary goal at a time</div>
+    </form>
+  </div>
+
+  <div class="ai-right">
+    <div class="ai-result-header">
+      <h3 class="section-title small">My AI generated plan for next 30 days</h3>
+      <p class="ai-result-subtitle">Workouts and diet are generated as daily patterns from predefined templates</p>
+    </div>
+
+    <% if (latestPlan && latestPlan.plan) { %>
+      <div class="ai-plan-grid ai-plan-animated">
+        <div class="ai-column">
+          <div class="ai-column-title">
+            <i class="ri-barbell-line"></i>
+            <span>Workout focus</span>
+          </div>
+          <div class="ai-card-list">
+            <% latestPlan.plan.workouts.forEach(function(w){ %>
+              <div class="ai-item-card">
+                <div class="ai-item-title"><%= w %></div>
+                <div class="ai-item-meta">Repeat 3 to 4 times per week based on energy levels</div>
+              </div>
+            <% }) %>
+          </div>
+        </div>
+        <div class="ai-column">
+          <div class="ai-column-title">
+            <i class="ri-restaurant-line"></i>
+            <span>Diet focus</span>
+          </div>
+          <div class="ai-card-list">
+            <% latestPlan.plan.diet.forEach(function(d){ %>
+              <div class="ai-item-card">
+                <div class="ai-item-title"><%= d %></div>
+                <div class="ai-item-meta">Use as core items and combine with simple home cooked meals</div>
+              </div>
+            <% }) %>
+          </div>
+        </div>
+      </div>
+      <form method="post" action="/aipanel/save" class="ai-follow-form">
+        <button type="submit" class="primary-btn wide-btn">Follow this plan</button>
+      </form>
+    <% } else { %>
+      <div class="ai-empty-state">
+        <div class="ai-empty-icon"><i class="ri-cpu-line"></i></div>
+        <div class="ai-empty-title">No plan generated yet</div>
+        <div class="ai-empty-text">Click on Generate my plan to create your first AI based 30 day template.</div>
+      </div>
+    <% } %>
+  </div>
+</section>

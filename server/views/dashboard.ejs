@@ -1,0 +1,89 @@
+<section class="page-header">
+  <div>
+    <h2 class="page-title">Dashboard</h2>
+    <p class="page-subtitle">Welcome back, <%= user ? user.fullname : "Athlete" %></p>
+  </div>
+</section>
+
+<section class="dashboard-top">
+  <div class="welcome-card">
+    <div class="welcome-title">Good to see you, <%= user ? user.fullname.split(" ")[0] : "friend" %></div>
+    <div class="welcome-quote">
+      <i class="ri-double-quotes-l"></i>
+      <span><%= typeof quote !== "undefined" ? quote : "Small daily improvements are better than occasional intense efforts." %></span>
+    </div>
+    <div class="welcome-actions">
+      <a href="/aipanel" class="primary-btn">Generate AI Plan</a>
+      <a href="/profile" class="outline-btn">Update profile</a>
+    </div>
+  </div>
+</section>
+
+<section class="metrics-section">
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-card-label">Account</div>
+      <div class="metric-card-main"><%= user ? user.fullname : "Not available" %></div>
+      <div class="metric-card-sub"><%= user ? user.email : "" %></div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-card-label">Body metrics</div>
+      <div class="metric-card-main">
+        <span><%= profile ? profile.age : "-" %> yrs</span>
+        <span>•</span>
+        <span><%= profile ? profile.height : "-" %> cm</span>
+        <span>•</span>
+        <span><%= profile ? profile.weight : "-" %> kg</span>
+      </div>
+      <div class="metric-card-sub">
+        <% if (profile) { %>
+          <% const h = profile.height || 0; const w = profile.weight || 0; const bmi = h ? (w/((h/100)*(h/100))).toFixed(1) : "-"; %>
+          BMI approximately <%= bmi %>
+        <% } else { %>
+          Update your profile to calculate BMI
+        <% } %>
+      </div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-card-label">Preferences</div>
+      <div class="metric-card-main">
+        <span><%= profile ? profile.diet_pref.toUpperCase() : "-" %></span>
+      </div>
+      <div class="metric-chip-row">
+        <% if (profile && profile.goal && profile.goal.length) { %>
+          <% profile.goal.forEach(function(g){ %>
+            <span class="chip chip-blue"><%= g.replace("_"," ") %></span>
+          <% }) %>
+        <% } else { %>
+          <span class="chip chip-gray">No goals selected</span>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dashboard-links">
+  <h3 class="section-title">Next steps</h3>
+  <div class="link-card-grid">
+    <a href="/profile" class="link-card">
+      <div class="link-icon"><i class="ri-user-settings-line"></i></div>
+      <div class="link-text-main">Update profile</div>
+      <div class="link-text-sub">Keep your metrics accurate for better AI recommendations</div>
+    </a>
+    <a href="/progress" class="link-card">
+      <div class="link-icon"><i class="ri-line-chart-line"></i></div>
+      <div class="link-text-main">View progress</div>
+      <div class="link-text-sub">Visualize your journey using logs and charts</div>
+    </a>
+    <a href="/workouts" class="link-card">
+      <div class="link-icon"><i class="ri-open-arm-line"></i></div>
+      <div class="link-text-main">Browse workouts</div>
+      <div class="link-text-sub">Learn form and muscle groups before adding intensity</div>
+    </a>
+    <a href="/diets" class="link-card">
+      <div class="link-icon"><i class="ri-restaurant-line"></i></div>
+      <div class="link-text-main">Check diet options</div>
+      <div class="link-text-sub">Protein, carbs and micronutrients explained with simple cards</div>
+    </a>
+  </div>
+</section>

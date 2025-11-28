@@ -1,0 +1,48 @@
+<section class="page-header">
+  <div>
+    <h2 class="page-title">Mental Wellness Library</h2>
+    <p class="page-subtitle">Mind-focused routines for calmness, focus and emotional balance</p>
+  </div>
+</section>
+
+<section class="filter-strip">
+  <div class="filter-label">Browse by focus category</div>
+  <div class="filter-chips" id="mentalFilter">
+    <button type="button" data-category="all" class="chip chip-blue chip-filter active">All</button>
+    <button type="button" data-category="stress" class="chip chip-filter">Stress Relief</button>
+    <button type="button" data-category="anxiety" class="chip chip-filter">Anxiety</button>
+    <button type="button" data-category="focus" class="chip chip-filter">Focus & Clarity</button>
+    <button type="button" data-category="sleep" class="chip chip-filter">Better Sleep</button>
+    <button type="button" data-category="positivity" class="chip chip-filter">Positivity</button>
+  </div>
+</section>
+
+<section class="card-grid">
+  <% data.forEach(m => { %>
+    <article class="workout-card" data-category="<%= m.category.toLowerCase() %>">
+      <div class="card-header-row">
+        <h3 class="card-title"><%= m.title %></h3>
+        <span class="badge badge-small"><%= m.category %></span>
+      </div>
+      <div class="tag-row">
+        <span class="chip chip-green"><%= m.benefit %></span>
+      </div>
+      <p class="card-text"><%= m.practice %></p>
+    </article>
+  <% }) %>
+</section>
+
+<script>
+document.querySelectorAll(".chip-filter").forEach(btn=>{
+  btn.onclick = ()=>{
+    document.querySelectorAll(".chip-filter").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+
+    const filter = btn.dataset.category;
+    document.querySelectorAll(".workout-card").forEach(card=>{
+      card.style.display = (filter==="all" || card.dataset.category===filter) 
+        ? "block" : "none";
+    });
+  };
+});
+</script>

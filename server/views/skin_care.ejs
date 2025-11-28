@@ -1,0 +1,48 @@
+<section class="page-header">
+  <div>
+    <h2 class="page-title">Skin Care Library</h2>
+    <p class="page-subtitle">Natural + modern routines to improve glow, texture & hydration</p>
+  </div>
+</section>
+
+<section class="filter-strip">
+  <div class="filter-label">Filter by type / skin need</div>
+  <div class="filter-chips" id="skinFilter">
+    <button type="button" data-type="all" class="chip chip-blue chip-filter active">All</button>
+    <button type="button" data-type="dry" class="chip chip-filter">Dry Skin</button>
+    <button type="button" data-type="oily" class="chip chip-filter">Oily Skin</button>
+    <button type="button" data-type="acne" class="chip chip-filter">Acne Care</button>
+    <button type="button" data-type="glow" class="chip chip-filter">Glow Boost</button>
+    <button type="button" data-type="aging" class="chip chip-filter">Anti-Aging</button>
+  </div>
+</section>
+
+<section class="diet-grid">
+  <% data.forEach(s => { %>
+      <article class="diet-card" data-type="<%= s.type.toLowerCase() %>">
+        <div class="card-header-row">
+          <h3 class="card-title"><%= s.item_name %></h3>
+          <span class="badge badge-small"><%= s.type %></span>
+        </div>
+        <div class="tag-row">
+          <span class="chip chip-green"><%= s.benefit %></span>
+        </div>
+        <p class="card-text"><%= s.usage %></p>
+      </article>
+  <% }) %>
+</section>
+
+<script>
+document.querySelectorAll(".chip-filter").forEach(btn=>{
+  btn.onclick = ()=>{
+    document.querySelectorAll(".chip-filter").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+
+    const filter = btn.dataset.type;
+    document.querySelectorAll(".diet-card").forEach(card=>{
+      card.style.display = (filter==="all" || card.dataset.type===filter)
+        ? "block" : "none";
+    });
+  };
+});
+</script>

@@ -1,0 +1,95 @@
+<section class="page-header">
+  <div>
+    <h2 class="page-title">Progress</h2>
+    <p class="page-subtitle">Track how your body metrics evolve over time using logs and charts</p>
+  </div>
+</section>
+
+<section class="progress-layout">
+  <div class="progress-charts">
+    <div class="chart-card">
+      <div class="chart-title-row">
+        <div class="chart-title">Weight trend</div>
+        <div class="chart-subtitle">Changes over time from your profile updates</div>
+      </div>
+      <canvas id="weightChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title-row">
+        <div class="chart-title">BMI trend</div>
+        <div class="chart-subtitle">Approximate BMI values based on height and weight</div>
+      </div>
+      <canvas id="bmiChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title-row">
+        <div class="chart-title">Goal Distribution</div>
+        <div class="chart-subtitle">Most frequently selected goals</div>
+      </div>
+      <canvas id="goalChart"></canvas>
+    </div>
+  </div>
+
+  <div class="progress-log">
+    <div class="log-header">
+      <div class="log-title">Update history</div>
+      <div class="log-subtitle">Every time you update your profile, a log entry is stored</div>
+    </div>
+    <div class="log-table">
+      <div class="log-row log-row-header">
+        <div class="log-cell">Date</div>
+        <div class="log-cell">Age</div>
+        <div class="log-cell">Height</div>
+        <div class="log-cell">Weight</div>
+        <div class="log-cell">Diet</div>
+        <div class="log-cell">Goals</div>
+      </div>
+      <% logs.forEach(function(l){ %>
+        <div class="log-row">
+          <div class="log-cell">
+            <% const d = new Date(l.timestamp); %>
+            <%= d.toLocaleDateString("en-IN") %>
+          </div>
+          <div class="log-cell"><%= l.updated.age %></div>
+          <div class="log-cell"><%= l.updated.height %> cm</div>
+          <div class="log-cell"><%= l.updated.weight %> kg</div>
+          <div class="log-cell"><%= l.updated.diet_pref %></div>
+          <div class="log-cell"><%= l.updated.goal ? l.updated.goal.join(", ") : "" %></div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const labels = <%- JSON.stringify(labels || []) %>;
+  const weightData = <%- JSON.stringify(weightData || []) %>;
+  const bmiData = <%- JSON.stringify(bmiData || []) %>;
+</script>
+<script>
+new Chart(document.getElementById("weightChart"),{
+  type:"line",
+  data:{ labels, datasets:[{label:"Weight",data:weightData}] }
+});
+
+new Chart(document.getElementById("bmiChart"),{
+  type:"line",
+  data:{ labels, datasets:[{label:"BMI",data:bmiData}] }
+});
+
+new Chart(document.getElementById("goalChart"),{
+  type:"doughnut",
+  data:{
+    labels: <%- JSON.stringify(goalLabels) %>,
+    datasets:[{
+      data: <%- JSON.stringify(goalValues) %>,
+      backgroundColor:[
+        "#ff6384","#36a2eb","#ffcd56","#4bc0c0",
+        "#9966ff","#ff9f40","#66FF99","#42f5e3"
+      ]
+    }]
+  }
+});
+</script>

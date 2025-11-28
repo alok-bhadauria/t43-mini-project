@@ -1,0 +1,145 @@
+<section class="hero-section">
+  <!-- LEFT: HERO CONTENT -->
+  <div class="hero-content">
+    <span class="badge">AI POWERED FITNESS</span>
+
+    <h1 class="hero-title gradient-text">
+      Build a stronger, healthier you.
+    </h1>
+
+    <p class="hero-subtitle">
+      Your AI-powered fitness companion: smart workouts, simple diet guidance,
+      and clean progress tracking in one place.
+    </p>
+
+    <div class="hero-actions">
+      <% if(currentUser){ %>
+        <a href="/dashboard" class="primary-btn hero-btn">
+          Go to Dashboard
+          <i class="ri-arrow-right-up-line"></i>
+        </a>
+      <% } else { %>
+        <a href="/signup" class="primary-btn hero-btn">
+          Get Started Free
+          <i class="ri-arrow-right-up-line"></i>
+        </a>
+        <a href="/login" class="outline-btn hero-btn">
+          I already have an account
+        </a>
+      <% } %>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-number">Smarter</div>
+        <div class="stat-label">AI generated plans</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">Cleaner</div>
+        <div class="stat-label">Minimal tracking UI</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">Private</div>
+        <div class="stat-label">No ads, no spam</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: TODAY'S FOCUS CARD -->
+  <div class="hero-visual">
+    <div class="hero-card hero-card-main">
+      <div class="hero-card-title">Today’s Focus</div>
+
+      <div class="hero-chip-row">
+        <span class="chip chip-blue">
+          <%= focus ? focus.focusArea : "Full body & balanced routine" %>
+        </span>
+        <span class="chip chip-green">
+          <%= focus ? (focus.bmi + " BMI approx") : "Profile based once you sign up" %>
+        </span>
+      </div>
+
+      <div class="hero-metrics-grid">
+        <div class="metric-pill">
+          <div class="metric-label">Workout</div>
+          <div class="metric-value">
+            <%= focus ? focus.workoutMinutes : 45 %> min
+          </div>
+        </div>
+        <div class="metric-pill">
+          <div class="metric-label">Steps target</div>
+          <div class="metric-value">
+            <%= focus ? focus.stepsTarget : 8000 %>
+          </div>
+        </div>
+        <div class="metric-pill">
+          <div class="metric-label">Calories guide</div>
+          <div class="metric-value">
+            <%= focus ? focus.caloriesGuide : 2200 %> kcal
+          </div>
+        </div>
+      </div>
+
+      <% if (focus) { %>
+        <div class="hero-progress-label">
+          <span>Weekly consistency</span>
+          <span><%= focus.consistency %>%</span>
+        </div>
+        <div class="hero-progress-bar">
+          <div class="hero-progress-fill" style="width:<%= focus.consistency %>%"></div>
+        </div>
+      <% } else { %>
+        <div class="hero-progress-label">
+          <span>Weekly consistency</span>
+          <span>72%</span>
+        </div>
+        <div class="hero-progress-bar">
+          <div class="hero-progress-fill"></div>
+        </div>
+      <% } %>
+
+      <p class="motivation-text">
+        Consistency beats perfection — even 30 minutes of movement is a win.
+      </p>
+    </div>
+
+    <div class="hero-card hero-card-secondary">
+      <div class="hero-card-title">Diet focus</div>
+      <div class="chip chip-gray">
+        <%= focus ? focus.dietFocus : "Balanced, nutrient-rich plate" %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="info-section">
+  <h2 class="section-title">Why this app exists</h2>
+  <div class="info-grid">
+    <article class="info-card">
+      <div class="info-icon"><i class="ri-brain-line"></i></div>
+      <h3 class="info-title">Students & developers</h3>
+      <p class="info-text">
+        Long sitting hours, irregular meals and low activity. This app gives
+        you a gentle structure without feeling like a full-time job.
+      </p>
+    </article>
+
+    <article class="info-card">
+      <div class="info-icon"><i class="ri-pulse-line"></i></div>
+      <h3 class="info-title">Simple but smart</h3>
+      <p class="info-text">
+        Not as complex as a smartwatch ecosystem, but much smarter than a
+        random PDF workout plan from the internet.
+      </p>
+    </article>
+
+    <article class="info-card">
+      <div class="info-icon"><i class="ri-lock-2-line"></i></div>
+      <h3 class="info-title">Privacy friendly</h3>
+      <p class="info-text">
+        Your data stays in your account. No social feeds, no likes, no
+        distractions — just you and your progress.
+      </p>
+    </article>
+  </div>
+</section>

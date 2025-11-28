@@ -1,0 +1,49 @@
+<section class="auth-section">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h2>Create your account</h2>
+      <p>Set up your profile and let AI generate a fitness roadmap for you</p>
+    </div>
+    <form id="signupForm" method="post" action="/signup" class="auth-form">
+      <div class="form-group">
+        <label for="signupFullname">Full name</label>
+        <div class="input-with-icon">
+          <i class="ri-user-line"></i>
+          <input id="signupFullname" name="fullname" type="text" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="signupEmail">Email</label>
+        <div class="input-with-icon">
+          <i class="ri-mail-line"></i>
+          <input id="signupEmail" name="email" type="email" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="signupPhone">Mobile (optional)</label>
+        <div class="input-with-icon">
+          <i class="ri-phone-line"></i>
+          <input id="signupPhone" name="phone" type="tel" placeholder="Optional">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="signupPassword">Password</label>
+        <div class="input-with-icon input-password">
+          <i class="ri-lock-2-line"></i>
+          <input id="signupPassword" name="password" type="password" minlength="8" required>
+          <button type="button" class="password-toggle" data-target="signupPassword">
+            <i class="ri-eye-off-line"></i>
+          </button>
+        </div>
+        <div class="password-hint">
+          Minimum 8 characters with at least one uppercase letter, one number and one special symbol
+        </div>
+      </div>
+      <button type="submit" class="primary-btn auth-submit">Sign Up</button>
+    </form>
+    <div class="auth-footer-text">
+      Already have an account
+      <a href="/login">Login</a>
+    </div>
+  </div>
+</section>
