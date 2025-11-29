@@ -7,15 +7,24 @@ import json
 app = Flask(__name__)
 
 # ====== LOAD TRAINED MODELS ====== #
-workout_model = joblib.load("workout_model.pkl")
-diet_model = joblib.load("diet_model.pkl")
+w_bundle = joblib.load("workout_model.pkl")
+d_bundle = joblib.load("diet_model.pkl")
+
+w_model = w_bundle["model"]
+w_scaler = w_bundle["scaler"]
+features = w_bundle["features"]   # same used for diet model
+
+d_model = d_bundle["model"]
+d_scaler = d_bundle["scaler"]
 
 with open("template_mappings.json") as f:
     templates = json.load(f)
 
+
 @app.route("/")
 def home():
-    return "AI Fitness Model v2 Running"
+    return "AI Fitness Model v3 Running"
+
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -27,41 +36,50 @@ def predict():
     weight = float(data["weight"])
     diet_pref = data["diet_pref"]
 
-    # Expect 2 goals always now
+    # Expect 2 goals (sent separately)
     goal1 = data.get("goal1")
     goal2 = data.get("goal2")
 
     bmi = weight / ((height / 100) ** 2)
 
-    # ========== FEATURE VECTOR (Order must match training) ========== #
-    x = [age, height, weight, bmi]
+    # ========== BUILD FEATURE VECTOR FROM FEATURE NAMES ========== #
+    # Start with all zeros
+    feat_vals = {f: 0.0 for f in features}
 
-    DIET_CLASSES = [
-        "veg", "nonveg", "vegan", "low_carb",
-        "low_fat", "lactose_free", "sugar_free"
-    ]
-    for d in DIET_CLASSES:
-        x.append(1 if diet_pref == d else 0)
+    # numeric features
+    if "age" in feat_vals:    feat_vals["age"] = age
+    if "height" in feat_vals: feat_vals["height"] = height
+    if "weight" in feat_vals: feat_vals["weight"] = weight
+    if "bmi" in feat_vals:    feat_vals["bmi"] = bmi
 
-    GOAL_CLASSES = [
-        "muscle_gain","lean_body_mass","fitness_level","weight_loss","flexibility",
-        "endurance","stress_reduction","core_strength","sleep_improvement",
-        "lower_blood_pressure","cardio_health","increase_energy",
-        "boost_immunity","mental_focus","exercise_consistency"
-    ]
-    for g in GOAL_CLASSES:
-        x.append(1 if (g == goal1) else 0)
+    # one-hot for diet_pref_*
+    for f in features:
+        if f.startswith("diet_pref_"):
+            pref_name = f[len("diet_pref_"):]
+            feat_vals[f] = 1.0 if pref_name == diet_pref else 0.0
 
-    for g in GOAL_CLASSES:
-        x.append(1 if (g == goal2) else 0)
+    # one-hot for goal1_*
+    for f in features:
+        if f.startswith("goal1_"):
+            g_name = f[len("goal1_"):]
+            feat_vals[f] = 1.0 if g_name == goal1 else 0.0
 
-    X = np.array([x])
+    # one-hot for goal2_*
+    for f in features:
+        if f.startswith("goal2_"):
+            g_name = f[len("goal2_"):]
+            feat_vals[f] = 1.0 if g_name == goal2 else 0.0
 
-    # ========== PREDICT USING TRAINED MODEL ========== #
-    w_pred = workout_model["model"].predict(workout_model["scaler"].transform(X))[0]
-    d_pred = diet_model["model"].predict(diet_model["scaler"].transform(X))[0]
+    # Build X in the exact feature order
+    X = np.array([[feat_vals[f] for f in features]])
 
-    # ========== MAP OUTPUT LABEL → TEMPLATE ========= #
+    # ========== PREDICT ========== #
+    Xw = w_scaler.transform(X)
+    Xd = d_scaler.transform(X)
+
+    w_pred = w_model.predict(Xw)[0]
+    d_pred = d_model.predict(Xd)[0]
+
     workouts = templates["workout_templates"].get(w_pred, ["Plan unavailable"])
     diet = templates["diet_templates"].get(d_pred, ["Plan unavailable"])
 
@@ -72,6 +90,7 @@ def predict():
         "diet": diet,
         "bmi": round(bmi, 2)
     })
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
