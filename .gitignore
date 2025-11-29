@@ -1,32 +1,22 @@
-# OS junk
 .DS_Store
 Thumbs.db
 
-# Root env
 .env
 
-############################
-# NODE (server/)
-############################
 server/node_modules/
 server/.env
 server/.DS_Store
 
-# Logs
 server/npm-debug.log*
 server/yarn-debug.log*
 server/yarn-error.log*
 server/logs/
 server/*.log
 
-# Coverage / build (if you add them later)
 server/coverage/
 server/dist/
 server/build/
 
-############################
-# PYTHON (ml/)
-############################
 ml/__pycache__/
 ml/*.pyc
 ml/*.pyo
@@ -35,8 +25,4 @@ ml/.env
 ml/.venv/
 ml/venv/
 ml/env/
-
-# Generated ML artifacts
 ml/fitness_synthetic_data.csv
-ml/*.pkl
-ml/template_mappings.json
