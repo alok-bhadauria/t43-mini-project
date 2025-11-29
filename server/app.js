@@ -50,6 +50,8 @@ app.use(session({
   }
 }));
 
+app.set("trust proxy", 1) 
+
 mongoose.connect(process.env.MONGO_URI)
 .then(()=>console.log("MongoDB Connected"))
 .catch(err=>console.log("MongoDB Error:",err));
@@ -70,10 +72,14 @@ app.use((req,res,next)=>{
 });
 
 app.use((req,res,next)=>{
-  const open = ["/","/login","/signup","/workouts","/diets"];
-  if(open.includes(req.path) || req.session.user) return next();
-  return res.redirect("/login");
-});
+  const open = ["/","/login","/signup","/workouts","/diets","/mental-health","/skin-care"]
+
+  if (open.includes(req.path) || req.path.startsWith("/login") || req.path.startsWith("/signup") || req.session.user) {
+    return next()
+  }
+
+  return res.redirect("/login")
+})
 
 app.use((req,res,next)=>{
   res.locals.path = req.path;
