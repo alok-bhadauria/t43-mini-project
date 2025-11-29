@@ -19,28 +19,28 @@ goals = [
 # ---------------- TEMPLATE LIBRARY ---------------- #
 
 workout_templates = {
-    "W_strength":   ["Bench Press","Squat","Deadlift","Overhead Press","Pull Ups","Weighted Dips"],
-    "W_fatloss":    ["HIIT","Burpees","Mountain Climbers","Jump Rope","Cycling","Sprints"],
-    "W_flex":       ["Yoga Flow","Pilates Core","Mobility Drills","Hamstring Stretch","Cat-Cow"],
-    "W_endurance":  ["Running","Swimming","Cycling Long","Rowing Machine","Stair Climb"],
-    "W_core":       ["Plank","Leg Raises","Russian Twist","Hanging Knee Tucks","Side Plank"],
-    "W_recovery":   ["Light Yoga","Deep Breathing","Walking 5km","Foam Rolling"],
+    "W_strength"  : ["Bench Press","Squat","Deadlift","Overhead Press","Pull Ups","Weighted Dips"],
+    "W_fatloss"   : ["HIIT","Burpees","Mountain Climbers","Jump Rope","Cycling","Sprints"],
+    "W_flex"      : ["Yoga Flow","Pilates Core","Mobility Drills","Hamstring Stretch","Cat-Cow"],
+    "W_endurance" : ["Running","Swimming","Cycling Long","Rowing Machine","Stair Climb"],
+    "W_core"      : ["Plank","Leg Raises","Russian Twist","Hanging Knee Tucks","Side Plank"],
+    "W_recovery"  : ["Light Yoga","Deep Breathing","Walking 5km","Foam Rolling"]
 }
 
 diet_templates = {
-    "D_mass": ["Oats","Milk","Peanut Butter","Banana","Paneer","Rice","Chicken"],
-    "D_lean": ["Egg Whites","Brown Rice","Sweet Potato","Greek Yogurt","Sprouts"],
-    "D_lowfat": ["Vegetable Soup","Steamed Broccoli","Salad","Corn","Apple"],
-    "D_lowcarb": ["Eggs","Avocado","Paneer","Fish","Spinach","Almonds"],
-    "D_vegan": ["Tofu","Soy Milk","Quinoa","Lentils","Beans","Hummus"],
-    "D_sugarfree": ["Nuts","Cottage Cheese","Boiled Eggs","Vegetable Mix"],
-    "D_bpcontrol": ["Oats","Banana","Leafy Greens","Beet Juice","Olive Oil"],
+    "D_mass"      : ["Oats","Milk","Peanut Butter","Banana","Paneer","Rice","Chicken"],
+    "D_lean"      : ["Egg Whites","Brown Rice","Sweet Potato","Greek Yogurt","Sprouts"],
+    "D_lowfat"    : ["Vegetable Soup","Steamed Broccoli","Salad","Corn","Apple"],
+    "D_lowcarb"   : ["Eggs","Avocado","Paneer","Fish","Spinach","Almonds"],
+    "D_vegan"     : ["Tofu","Soy Milk","Quinoa","Lentils","Beans","Hummus"],
+    "D_sugarfree" : ["Nuts","Cottage Cheese","Boiled Eggs","Vegetable Mix"],
+    "D_bpcontrol" : ["Oats","Banana","Leafy Greens","Beet Juice","Olive Oil"]
 }
 
 # ---------------- DATA GENERATION ---------------- #
 
 rows = []
-size = 2000   # better dataset
+size = 2000  # ↑ stronger learning
 
 for _ in range(size):
 
@@ -51,39 +51,41 @@ for _ in range(size):
 
     pref = np.random.choice(diet_prefs)
 
+    # --------- dual-goal generation ---------
     goal1 = np.random.choice(goals)
     goal2 = np.random.choice(goals)
     while goal2 == goal1:
         goal2 = np.random.choice(goals)
 
-    # WORKOUT mapping (based on either goal)
-    if "muscle" in goal1 or "muscle" in goal2 or "mass" in goal1 or "mass" in goal2:
+    goals_pair = [goal1, goal2]
+
+    # --------- WORKOUT mapping using goal1+goal2 ---------
+    if any(g in goals_pair for g in ["muscle_gain","lean_body_mass"]):
         w_key = "W_strength"
-    elif "loss" in goal1 or "loss" in goal2 or "fat" in goal1 or "fat" in goal2:
+    elif any(g in goals_pair for g in ["weight_loss","fitness_level"]):
         w_key = "W_fatloss"
-    elif "flex" in goal1 or "flex" in goal2 or "stretch" in goal1 or "stretch" in goal2:
+    elif any(g in goals_pair for g in ["flexibility","mental_focus"]):
         w_key = "W_flex"
-    elif "endurance" in goal1 or "endurance" in goal2 or "cardio" in goal1 or "cardio" in goal2:
+    elif any(g in goals_pair for g in ["endurance","cardio_health","increase_energy"]):
         w_key = "W_endurance"
-    elif "core" in goal1 or "core" in goal2:
+    elif any(g in goals_pair for g in ["core_strength"]):
         w_key = "W_core"
     else:
-        w_key = np.random.choice(list(workout_templates.keys()))
+        w_key = "W_recovery"
 
-    # DIET mapping (primary from diet pref)
+    # --------- DIET mapping by diet type ---------
     if pref == "vegan":
         d_key = "D_vegan"
     elif pref == "low_carb":
         d_key = "D_lowcarb"
-    elif pref == "low_fat" or pref == "lactose_free":
+    elif pref in ["low_fat","lactose_free"]:
         d_key = "D_lowfat"
     elif pref == "sugar_free":
         d_key = "D_sugarfree"
     else:
         d_key = np.random.choice(list(diet_templates.keys()))
 
-    rows.append([age, height, weight, bmi, pref, goal1, goal2, w_key, d_key])
-
+    rows.append([age,height,weight,bmi,pref,goal1,goal2,w_key,d_key])
 
 df = pd.DataFrame(rows, columns=[
     "age","height","weight","bmi",
