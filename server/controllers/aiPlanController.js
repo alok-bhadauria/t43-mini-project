@@ -14,8 +14,12 @@ exports.generatePlan = async (req, res) => {
 
       // Send data to Flask ML API
       const r = await axios.post("https://flask-for-ai-health-coach.onrender.com/predict", {
-         age:+age, height:+height, weight:+weight,
-         diet_pref, goals
+         age:+age,
+         height:+height,
+         weight:+weight,
+         diet_pref,
+         goal1,
+         goal2
       });
 
       const plan = {

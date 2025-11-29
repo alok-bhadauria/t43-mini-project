@@ -390,13 +390,13 @@ router.post("/aipanel/generate", requireLogin, async (req, res) => {
     }
 
     const payload = {
-      userId,
       age: Number(req.body.age || profile.age),
       height: Number(req.body.height || profile.height),
       weight: Number(req.body.weight || profile.weight),
       diet_pref: req.body.diet_pref || profile.diet_pref,
-      goal: req.body.goal || (Array.isArray(profile.goal) && profile.goal.length ? profile.goal[0] : "fit")
-    }
+      goal1: profile.goal?.[0] || null,
+      goal2: profile.goal?.[1] || null
+    };
 
     const r = await axios.post("https://flask-for-ai-health-coach.onrender.com/predict", payload)
     const planData = r.data
