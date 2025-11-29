@@ -25,4 +25,3 @@ ml/.env
 ml/.venv/
 ml/venv/
 ml/env/
-ml/fitness_synthetic_data.csv
