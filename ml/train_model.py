@@ -9,11 +9,11 @@ import json
 print("\nLoading dataset...")
 df = pd.read_csv("fitness_synthetic_data.csv")
 
-# ------------------ ONE-HOT ENCODING ------------------ #
+# ================== ONE HOT ENCODE ================== #
 
-print("Encoding 7 diet types + 15 goals...")
+print("Encoding diet preferences + both goals...")
 
-df = pd.get_dummies(df, columns=["diet_pref","goal"], dtype=int)
+df = pd.get_dummies(df, columns=["diet_pref","goal1","goal2"], dtype=int)
 
 features = [c for c in df.columns if c not in ["workout_plan","diet_plan"]]
 X = df[features].values
@@ -21,34 +21,37 @@ X = df[features].values
 yW = df["workout_plan"]
 yD = df["diet_plan"]
 
-# ------------------ TRAIN TEST SPLIT ------------------ #
+# ================== TRAIN SPLIT ================== #
+
 print("Splitting dataset...")
 
 Xw_train, Xw_test, yw_train, yw_test = train_test_split(X,yW,test_size=0.2,random_state=42)
 Xd_train, Xd_test, yd_train, yd_test = train_test_split(X,yD,test_size=0.2,random_state=42)
 
-# ------------------ SCALING ------------------ #
+# ================== SCALING ================== #
+
 print("Scaling features...")
 ws = StandardScaler();   Xw_train = ws.fit_transform(Xw_train);   Xw_test = ws.transform(Xw_test)
 ds = StandardScaler();   Xd_train = ds.fit_transform(Xd_train);   Xd_test = ds.transform(Xd_test)
 
-# ------------------ MODEL TRAINING ------------------ #
+# ================== MODEL TRAINING ================== #
+
 print("Training Workout Model...")
-w_model = MLPClassifier(hidden_layer_sizes=(72,36), max_iter=900, random_state=42)
+w_model = MLPClassifier(hidden_layer_sizes=(84,42), max_iter=1100, random_state=42)
 w_model.fit(Xw_train, yw_train)
 
 print("Training Diet Model...")
-d_model = MLPClassifier(hidden_layer_sizes=(72,36), max_iter=900, random_state=42)
+d_model = MLPClassifier(hidden_layer_sizes=(84,42), max_iter=1100, random_state=42)
 d_model.fit(Xd_train, yd_train)
 
-# ------------------ SAVE MODELS ------------------ #
-print("Saving model files...")
+# ================== SAVE MODELS ================== #
+
+print("Saving trained models...")
 
 joblib.dump({"model":w_model,"scaler":ws,"features":features}, "workout_model.pkl")
 joblib.dump({"model":d_model,"scaler":ds,"features":features}, "diet_model.pkl")
 
-# ------------------ BUILD TEMPLATE JSON ------------------ #
-print("Building templates mapping...")
+# ================== SAVE TEMPLATE JSON ================== #
 
 workout_templates = {
     "W_strength": ["Bench Press","Squat","Deadlift","Overhead Press","Pull Ups","Weighted Dips"],
@@ -69,12 +72,7 @@ diet_templates = {
     "D_bpcontrol": ["Oats","Banana","Leafy Greens","Beet Juice","Olive Oil"],
 }
 
-templates = {
-    "workout_templates": workout_templates,
-    "diet_templates": diet_templates
-}
-
 with open("template_mappings.json","w") as f:
-    json.dump(templates, f, indent=2)
+    json.dump({"workout_templates":workout_templates,"diet_templates":diet_templates}, f, indent=2)
 
-print("\nTraining Complete — Models + template_mappings.json created.\n")
+print("\nTraining Complete — Models + template_mappings.json saved.\n")

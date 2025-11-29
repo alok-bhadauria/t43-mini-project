@@ -398,7 +398,7 @@ router.post("/aipanel/generate", requireLogin, async (req, res) => {
       goal: req.body.goal || (Array.isArray(profile.goal) && profile.goal.length ? profile.goal[0] : "fit")
     }
 
-    const r = await axios.post("http://127.0.0.1:5000/predict", payload)
+    const r = await axios.post("https://flask-for-ai-health-coach.onrender.com/predict", payload)
     const planData = r.data
 
     await AIPlan.create({
@@ -477,7 +477,7 @@ router.get("/progress", requireLogin, async (req, res) => {
       return h && w ? Number((w / ((h/100)**2)).toFixed(2)) : null
     })
 
-    // 🌟 Calculate goal distribution
+    // Calculate goal distribution
     let goalCount = {}
     logs.forEach(l => (l.updated.goal || []).forEach(g => {
       goalCount[g] = (goalCount[g] || 0) + 1
