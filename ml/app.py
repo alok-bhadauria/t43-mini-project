@@ -15,7 +15,7 @@ with open("template_mappings.json") as f:
 
 @app.route("/")
 def home():
-    return "AI Fitness Model Running"
+    return "AI Fitness Model v2 Running"
 
 @app.route("/predict", methods=["POST"])
 def predict():
