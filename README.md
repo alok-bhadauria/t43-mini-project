@@ -2,6 +2,16 @@
 
 A full-stack intelligent fitness and wellness platform designed to generate personalized workout and diet plans using machine learning. The system also includes progress tracking, goal-based habit insights, structured knowledge libraries and an extendable architecture for future AI-powered enhancements.
 
+# Deployment
+
+First, run the AI Model API by visiting the URL :
+https://flask-for-ai-health-coach.onrender.com/
+
+Then, visit our WebApp "SwasthyaCoach AI" here :
+https://swasthyacoach.onrender.com/
+
+(If AI Model API is not active, then the "AI Plan Generator" will not work, rest of the WebApp will work regardless)
+
 # Overview
 
 The AI Fitness Coach provides an end-to-end experience for users looking to track, maintain and improve their fitness journey. The platform combines traditional structured data with machine learning predictions to generate tailored fitness recommendations. It supports user authentication, adaptive profile-based suggestions, progress graphs, workout references, diet guidance, mental health practices and skincare information.
